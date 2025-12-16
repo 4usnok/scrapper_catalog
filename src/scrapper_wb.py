@@ -106,8 +106,8 @@ class ParsingWB:
         country_but.click()
         time.sleep(1)
 
-    def filters_for_cash(self):
-        """Фильтрация по стоимости"""
+    def run_scrapper(self):
+        """Запуск скраппера"""
         # применить фильтрацию
         elem = WebDriverWait(self.driver, 5).until(
             EC.element_to_be_clickable(
@@ -115,8 +115,7 @@ class ParsingWB:
             )
         )
         elem.click()
-        time.sleep(60)
-        pass
+        time.sleep(30)
 
 
 def main():
@@ -124,3 +123,4 @@ def main():
     parser.search_query()
     parser.filters_for_reit()
     parser.filters_for_country()
+    parser.run_scrapper()

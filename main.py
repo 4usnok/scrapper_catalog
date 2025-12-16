@@ -1,4 +1,4 @@
-from src.pars_wb import main
+from src.scrapper_wb import main
 
 
 if __name__ == "__main__":
