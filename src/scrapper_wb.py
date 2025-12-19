@@ -115,12 +115,20 @@ class ParsingWB:
             )
         )
         elem.click()
-        time.sleep(30)
+        time.sleep(5)
+
+    def save_html_text(self):
+        """Сохраняет html в файл"""
+        soup = self.driver.page_source
+        with open("data/wildberries.html", "w", encoding="utf-8") as file:
+            file.write(soup)
+        print("HTML код на обновлённый каталог успешно создан!")
 
 
-def main():
+def main_scrapper():
     parser = ParsingWB()
     parser.search_query()
     parser.filters_for_reit()
     parser.filters_for_country()
     parser.run_scrapper()
+    parser.save_html_text()
