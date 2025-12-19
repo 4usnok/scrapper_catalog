@@ -1,3 +1,4 @@
+import logging
 import openpyxl
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -15,6 +16,7 @@ class SaveData:
             html_content = f.read()
 
         self.soup = BeautifulSoup(html_content, features="html.parser")
+        logging.info("Чтение html-файла прошло успешно")
 
     def title_model(self):
         """Парсинг названий модели"""
@@ -44,6 +46,7 @@ class SaveData:
             }
         )
         df.to_excel("data/wb_catalog.xlsx", index=False)
+        logging.info("Создание файла xlxs с отфильтрованными товарами прошло успешно")
 
     def read_to_excel_title(self):
         file_path = "data/wb_catalog.xlsx"

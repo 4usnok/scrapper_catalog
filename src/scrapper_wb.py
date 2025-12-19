@@ -1,6 +1,7 @@
 import os
 import time
 
+import logging
 from dotenv import load_dotenv
 from logger import logger
 from selenium import webdriver
@@ -122,7 +123,7 @@ class ParsingWB:
         soup = self.driver.page_source
         with open("data/wildberries.html", "w", encoding="utf-8") as file:
             file.write(soup)
-        print("HTML код на обновлённый каталог успешно создан!")
+        logging.info("HTML-файл на обновлённый каталог успешно создан!")
 
 
 def main_scrapper():
