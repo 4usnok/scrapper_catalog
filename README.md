@@ -25,6 +25,8 @@
 - `Pandas` (для обработки данных)
 - `BeautifulSoup` (для парсинга HTML)
 - `logging` (логирование)
+- `postgresql` (СУБД)
+- `sqlalchemy` (для работы с postgresql)
 
 ## Установка
 

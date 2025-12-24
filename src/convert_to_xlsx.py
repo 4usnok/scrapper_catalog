@@ -3,6 +3,8 @@ import openpyxl
 import pandas as pd
 from bs4 import BeautifulSoup
 
+from src.config_db import engine, table_name
+
 
 class SaveData:
 
@@ -41,10 +43,13 @@ class SaveData:
         # Записываем данные в ячейки
         df = pd.DataFrame(
             {
-                "Название модели": self.result_title,
-                "Ссылка на модель": self.result_href,
+                "title_model": self.result_title,
+                "url_model": self.result_href,
             }
         )
+        # Работа с БД
+        df.to_sql(table_name, engine, if_exists="replace", index=False)
+        logging.info("Данные в БД успешно загружены!")
         df.to_excel("data/wb_catalog.xlsx", index=False)
         logging.info("Создание файла xlxs с отфильтрованными товарами прошло успешно")
 
