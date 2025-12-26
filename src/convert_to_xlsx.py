@@ -11,27 +11,31 @@ class SaveData:
     def __init__(self):
         self.result_title = []
         self.result_href = []
+        self.product_container = None
+        self.card_titles = None
+        self.soup = None
         self.df = None
 
     def read_file(self):
         """Чтение html файла"""
         with open("data/wildberries.html", "r", encoding="utf-8") as f:
             html_content = f.read()
-
         self.soup = BeautifulSoup(html_content, features="html.parser")
+        self.product_container = self.soup.find("div", class_="product-card-list")
+        self.card_titles = self.product_container.find_all(
+            "a", class_="product-card__link j-card-link j-open-full-product-card"
+        )
         logging.info("Чтение html-файла прошло успешно")
 
     def title_model(self):
         """Парсинг названий модели"""
-        titles = self.soup.find_all("a", class_="product-card__link")
-        for title in titles:
-            self.result_title.append(title["aria-label"])
+        for info_title in self.card_titles:
+            self.result_title.append(info_title["aria-label"])
 
     def href_model(self):
         """Парсинг ссылки на модель"""
-        hrefs = self.soup.find_all("a", class_="product-card__link")
-        for href in hrefs:
-            self.result_href.append(href["href"])
+        for info_href in self.card_titles:
+            self.result_href.append(info_href["href"])
 
     def convert_to_file(self):
         """Сохранение в файл xlsx"""
@@ -40,7 +44,7 @@ class SaveData:
         # Создаём активный лист, куда будем загружать данные
         sheet = wb.active
         # Даём название странице
-        sheet.tittle = "Куртки"
+        sheet.tittle = "Товары"
         # Записываем данные в ячейки
         self.df = pd.DataFrame(
             {
