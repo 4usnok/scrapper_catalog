@@ -27,15 +27,11 @@ class SaveData:
         )
         logging.info("Чтение html-файла прошло успешно")
 
-    def title_model(self):
-        """Парсинг названий модели"""
-        for info_title in self.card_titles:
-            self.result_title.append(info_title["aria-label"])
-
-    def href_model(self):
-        """Парсинг ссылки на модель"""
-        for info_href in self.card_titles:
-            self.result_href.append(info_href["href"])
+    def pars_model(self):
+        """Парсинг названий и ссылок моделей"""
+        for info_model in self.card_titles:
+            self.result_title.append(info_model["aria-label"])
+            self.result_href.append(info_model["href"])
 
     def convert_to_file(self):
         """Сохранение в файл xlsx"""
@@ -72,8 +68,7 @@ class SaveData:
 def main_convert():
     pars = SaveData()
     pars.read_file()
-    pars.title_model()
-    pars.href_model()
+    pars.pars_model()
     pars.convert_to_file()
     pars.db_work()
     pars.read_to_excel_title()

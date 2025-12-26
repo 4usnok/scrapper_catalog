@@ -53,7 +53,7 @@ class ParsingWB:
         search_el = WebDriverWait(self.driver, 5).until(
             EC.element_to_be_clickable((By.ID, "searchInput"))
         )
-        search_el.send_keys("Пижамы")
+        search_el.send_keys(input("Что будем искать ?\n"))
         search_el.send_keys(Keys.ENTER)
         time.sleep(2)
         return search_el
