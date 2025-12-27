@@ -1,5 +1,3 @@
-import os
-
 import logging
 
 from src.convert_to_xlsx import main_convert
@@ -13,17 +11,7 @@ logging.basicConfig(
     force=True,
 )
 
-path_to_file = os.path.exists("data/wildberries.html")
 if __name__ == "__main__":
-    # Запуск парсера
-    if not path_to_file:
-        main_scrapper()
-        main_convert()
-        logging.info(
-            "Создание файла xlxs с названием и ссылками на товар прошло успешно"
-        )
-    else:
-        main_convert()
-        logging.info(
-            "Создание файла xlxs с названием и ссылками на товар прошло успешно"
-        )
+    main_scrapper()
+    main_convert()
+    logging.info("Создание файла xlxs с названием и ссылками на товар прошло успешно")

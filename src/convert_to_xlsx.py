@@ -18,7 +18,7 @@ class SaveData:
 
     def read_file(self):
         """Чтение html файла"""
-        with open("data/wildberries.html", "r", encoding="utf-8") as f:
+        with open("data/catalog.html", "r", encoding="utf-8") as f:
             html_content = f.read()
         self.soup = BeautifulSoup(html_content, features="html.parser")
         self.product_container = self.soup.find("div", class_="product-card-list")
@@ -48,17 +48,18 @@ class SaveData:
                 "url_model": self.result_href,
             }
         )
-        self.df.to_excel("data/wb_catalog.xlsx", index=False)
+        self.df.to_excel("data/catalog.xlsx", index=False)
         logging.info("Создание файла xlxs с отфильтрованными товарами прошло успешно")
 
     def db_work(self):
         """Сохранение данных в БД"""
         self.df.to_sql(table_name, engine, if_exists="replace", index=False)
         logging.info("Данные в БД успешно загружены!")
+        print("Данные успешно собраны и загружены в БД!")
 
     def read_to_excel_title(self):
         """Чтение файла xlsx"""
-        file_path = "data/wb_catalog.xlsx"
+        file_path = "data/catalog.xlsx"
         # Читаем файл в DataFrame
         self.df = pd.read_excel(file_path)
         # Выводим первые 5 строк, чтобы проверить данные
