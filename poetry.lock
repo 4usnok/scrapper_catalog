@@ -930,6 +930,24 @@ files = [
 ]
 
 [[package]]
+name = "pyshorteners"
+version = "1.0.1"
+description = "A Python lib to wrap and consume the most used shorteners APIs"
+optional = false
+python-versions = ">=3.6"
+groups = ["main"]
+files = [
+    {file = "pyshorteners-1.0.1.tar.gz", hash = "sha256:22045c997c4283124768c165623a267cf9ba2a7d416101e2e5fccfc244d34544"},
+]
+
+[package.dependencies]
+requests = "*"
+
+[package.extras]
+dev = ["pre-commit"]
+docs = ["sphinx"]
+
+[[package]]
 name = "pysocks"
 version = "1.7.1"
 description = "A Python SOCKS client module. See https://github.com/Anorov/PySocks for more information."
@@ -1457,4 +1475,4 @@ h11 = ">=0.16.0,<1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13"
-content-hash = "5fa2f147ad76d33ba89f0e5d1a056ff45eae94fc42472e8892f2ef8875792e15"
+content-hash = "e516336811ccf31030ed735bf0a93721f78dcabebd723272010a985f41bf1e69"
