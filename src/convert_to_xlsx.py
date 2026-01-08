@@ -11,6 +11,7 @@ class SaveData:
 
     def __init__(self):
         self.soup = None
+        self.html_content = None
         self.df = None
         self.product_container = None
         self.card_models = None
@@ -32,8 +33,10 @@ class SaveData:
     def read_file(self):
         """Чтение html файла"""
         with open("data/catalog.html", "r", encoding="utf-8") as f:
-            html_content = f.read()
-        self.soup = BeautifulSoup(html_content, features="html.parser")
+            self.html_content = f.read()
+
+    def pars_html(self):
+        self.soup = BeautifulSoup(self.html_content, features="html.parser")
         self.product_container = self.soup.find("div", class_="product-card-list")
         self.card_models = self.product_container.find_all(
             "a", class_="product-card__link j-card-link j-open-full-product-card"
@@ -137,13 +140,13 @@ class SaveData:
         self.df.to_excel("data/catalog.xlsx", index=False)
         logging.info("Создание файла xlxs с отфильтрованными товарами прошло успешно")
 
-    def db_work(self):
+    def save_to_db(self):
         """Сохранение данных в БД"""
         self.df.to_sql(table_name, engine, if_exists="replace", index=False)
         logging.info("Данные в БД успешно загружены!")
         print("Данные успешно собраны и загружены в БД!")
 
-    def read_to_excel_title(self):
+    def read_to_xlsx(self):
         """Чтение файла xlsx"""
         file_path = "data/catalog.xlsx"
         # Читаем файл в DataFrame
@@ -155,9 +158,10 @@ class SaveData:
 def main_convert():
     pars = SaveData()
     pars.read_file()
+    pars.pars_html()
     pars.discount_calc()
     pars.shorten_url()
     pars.pars_model()
     pars.convert_to_file()
-    pars.db_work()
-    pars.read_to_excel_title()
+    pars.save_to_db()
+    pars.read_to_xlsx()
