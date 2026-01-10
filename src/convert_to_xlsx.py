@@ -28,7 +28,6 @@ class SaveData:
         self.all_products = []
         self.is_original = []
         self.short_url = []
-        self.discount_list = []
 
     def read_file(self):
         """Чтение html файла"""
@@ -65,50 +64,19 @@ class SaveData:
         )
         logging.info("Чтение html-файла прошло успешно")
 
-    def discount_calc(self):
-        """Расчет скидки"""
-        for old, new in zip(self.old_price, self.new_price):
-            price_old_str, price_new_str = old.text.replace(
-                "\xa0", ""
-            ), new.text.replace("\xa0", "")
-            price_old_str, price_new_str = price_old_str.replace(
-                " ", ""
-            ), price_new_str.replace(" ", "")
-            price_old_str, price_new_str = price_old_str.replace(
-                "₽", ""
-            ), price_new_str.replace("₽", "")
-            price_old_int, price_new_int = int(price_old_str), int(price_new_str)
-            if price_old_int > 0:
-                self.discount_price = (
-                    (price_old_int - price_new_int) / price_old_int
-                ) * 100
-            else:
-                self.discount_price = 0
-            if 0 > self.discount_price:
-                self.discount_list.append(
-                    f"Товар подорожал на {int(self.discount_price) * -1}%"
-                )
-            elif self.discount_price == 0:
-                self.discount_list.append("Стоимость не изменилась")
-            else:
-                self.discount_list.append(
-                    f"Товар подешевел на {int(self.discount_price)}%"
-                )
-
     def shorten_url(self):
         """Сокращатель ссылок"""
         for url in self.card_models:
             original_href = url["href"]
             self.short_url.append(pyshorteners.Shortener().clckru.short(original_href))
 
-    def pars_model(self):
-        """Сбор информации карточки товара"""
-        for name, brand, old, new, disc, url, delivery, rating, rev in zip(
+    def unity_data_in_list(self):
+        """Сбор информации карточки товара в единый файл"""
+        for name, brand, old, new, url, delivery, rating, rev in zip(
             self.name_model,
             self.card_brand,
             self.old_price,
             self.new_price,
-            self.discount_list,
             self.short_url,
             self.delivery_date,
             self.rating_model,
@@ -119,7 +87,6 @@ class SaveData:
                 "brand_model": brand.text,
                 "old_price": old.text.replace("\xa0", ""),
                 "new_price": new.text.replace("\xa0", ""),
-                "discount_price": f"{disc}",
                 "url_model": url,
                 "delivery_date": delivery.text,
                 "rating": rating.text,
@@ -159,9 +126,8 @@ def main_convert():
     pars = SaveData()
     pars.read_file()
     pars.pars_html()
-    pars.discount_calc()
     pars.shorten_url()
-    pars.pars_model()
+    pars.unity_data_in_list()
     pars.convert_to_file()
     pars.save_to_db()
     pars.read_to_xlsx()
