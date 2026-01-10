@@ -17,7 +17,11 @@ dependencies = [
     "fake-useragent (>=2.2.0,<3.0.0)",
     "undetected-chromedriver (>=3.5.5,<4.0.0)",
     "selenium-stealth (>=1.0.6,<2.0.0)",
-    "openpyxl (>=3.1.5,<4.0.0)"
+    "openpyxl (>=3.1.5,<4.0.0)",
+    "psycopg2-binary (>=2.9.11,<3.0.0)",
+    "docker (>=7.1.0,<8.0.0)",
+    "sqlalchemy (>=2.0.45,<3.0.0)",
+    "pyshorteners (>=1.0.1,<2.0.0)"
 ]
 
 
@@ -32,4 +36,12 @@ flake8 = "^7.3.0"
 
 [tool.poetry.group.logging.dependencies]
 logger = "^1.4"
+
+
+[tool.poetry.group.log.dependencies]
+logging = "^0.4.9.6"
+
+
+[tool.poetry.group.tests.dependencies]
+coverage = "^7.13.1"
 

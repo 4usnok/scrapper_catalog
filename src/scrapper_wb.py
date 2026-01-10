@@ -1,6 +1,7 @@
 import os
 import time
 
+import logging
 from dotenv import load_dotenv
 from logger import logger
 from selenium import webdriver
@@ -17,14 +18,17 @@ url = os.getenv("base_url")
 class ParsingWB:
 
     def __init__(self):
-        self.driver = webdriver.Chrome()
+
         self.url = url
+
+        self.driver = webdriver.Chrome()
         self.settings_webdriver()
 
     def settings_webdriver(self):
+        """Настройка драйвера"""
         try:
             # Инициализация WebDriver для Chrome
-            self.driver.maximize_window()
+            self.driver.minimize_window()
             stealth(
                 self.driver,
                 languages=["ru-Ru", "en"],
@@ -38,8 +42,9 @@ class ParsingWB:
             logger.error(e)
             return None
 
-    def search_query(self):
+    def search_query(self, inp_search):
         """Поисковый запрос"""
+        self.driver.maximize_window()
         self.driver.get(url)
         # ждем появления элемента
         element = WebDriverWait(self.driver, 5).until(
@@ -52,7 +57,7 @@ class ParsingWB:
         search_el = WebDriverWait(self.driver, 5).until(
             EC.element_to_be_clickable((By.ID, "searchInput"))
         )
-        search_el.send_keys("Куртки")
+        search_el.send_keys(inp_search)
         search_el.send_keys(Keys.ENTER)
         time.sleep(2)
         return search_el
@@ -120,14 +125,16 @@ class ParsingWB:
     def save_html_text(self):
         """Сохраняет html в файл"""
         soup = self.driver.page_source
-        with open("data/wildberries.html", "w", encoding="utf-8") as file:
+        with open("data/catalog.html", "w", encoding="utf-8") as file:
             file.write(soup)
-        print("HTML код на обновлённый каталог успешно создан!")
+        logging.info("HTML-файл на обновлённый каталог успешно создан!")
+        time.sleep(5)
+        self.driver.quit()
 
 
 def main_scrapper():
     parser = ParsingWB()
-    parser.search_query()
+    parser.search_query(input("Введи название: "))
     parser.filters_for_reit()
     parser.filters_for_country()
     parser.run_scrapper()
